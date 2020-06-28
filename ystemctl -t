@@ -1,0 +1,32 @@
+[0;1;32m●[0m apache2.service - The Apache HTTP Server
+   Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           └─apache2-systemd.conf
+   Active: [0;1;32mactive (running)[0m (Result: exit-code) since Thu 2020-06-25 16:24:28 UTC; 2h 20min ago
+  Process: 32104 ExecStop=/usr/sbin/apachectl stop (code=exited, status=0/SUCCESS)
+  Process: 2300 ExecReload=/usr/sbin/apachectl graceful [0;1;31m(code=exited, status=1/FAILURE)[0m
+  Process: 32110 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SUCCESS)
+ Main PID: 32114 (apache2)
+    Tasks: 10 (limit: 2325)
+   CGroup: /system.slice/apache2.service
+           ├─  566 /usr/sbin/apache2 -k start
+           ├─  567 /usr/sbin/apache2 -k start
+           ├─  568 /usr/sbin/apache2 -k start
+           ├─  569 /usr/sbin/apache2 -k start
+           ├─  570 /usr/sbin/apache2 -k start
+           ├─  585 /usr/sbin/apache2 -k start
+           ├─  604 /usr/sbin/apache2 -k start
+           ├─ 2010 /usr/sbin/apache2 -k start
+           ├─ 2011 /usr/sbin/apache2 -k start
+           └─32114 /usr/sbin/apache2 -k start
+
+Jun 25 16:53:47 server1.at-school.xyz systemd[1]: Reloaded The Apache HTTP Server.
+Jun 25 16:56:05 server1.at-school.xyz systemd[1]: Reloading The Apache HTTP Server.
+Jun 25 16:56:05 server1.at-school.xyz systemd[1]: Reloaded The Apache HTTP Server.
+Jun 25 18:43:14 server1.at-school.xyz systemd[1]: Reloading The Apache HTTP Server.
+Jun 25 18:43:14 server1.at-school.xyz apachectl[2300]: AH00526: Syntax error on line 1 of /etc/apache2/sites-enabled/default-ssl.conf:
+Jun 25 18:43:14 server1.at-school.xyz apachectl[2300]: Invalid command '<VirtualHost_default_:443', perhaps misspelled or defined by a module not included in the server configuration
+Jun 25 18:43:14 server1.at-school.xyz apachectl[2300]: Action 'graceful' failed.
+Jun 25 18:43:14 server1.at-school.xyz apachectl[2300]: The Apache error log may have more information.
+Jun 25 18:43:14 server1.at-school.xyz systemd[1]: [0;1;39m[0;1;31m[0;1;39mapache2.service: Control process exited, code=exited status=1[0m
+Jun 25 18:43:14 server1.at-school.xyz systemd[1]: [0;1;31m[0;1;39m[0;1;31mReload failed for The Apache HTTP Server.[0m
