@@ -44,7 +44,6 @@ class TheoryTestController extends Controller
     }
     public function show(TheoryTest $test)
     {
-
             $test->load('theoryquestions.theoryanswers');
             return response()->json($test);
     }
