@@ -38,13 +38,14 @@ Route::middleware('auth:api')->group(function() {
     Route::post('classroomcheck', 'ClassroomController@check');
 
     Route::post('theorytests', 'TheoryTestController@index');
-    
+
     Route::post('storetheorytest', 'TheoryTestController@store');
     Route::get('theorytest/{test}', 'TheoryTestController@show');
 
     Route::post('theoryquestion/{test}', 'TheoryQuestionController@store');
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');
- 
+    Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
+
     Route::post('objectivetests', 'ObjectiveTestController@index');
 
     Route::post('objectivetest', 'ObjectiveTestController@store');
