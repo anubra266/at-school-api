@@ -44,13 +44,7 @@ class TheoryTestController extends Controller
     }
     public function show(TheoryTest $test)
     {
-        $classroom = Classroom::where('id', $test->classroom_id)->first();
-        if ($classroom->user_id == auth()->user()->id||$classroom->users()->pluck('user_id')->contains(auth()->user()->id)) {
             $test->load('theoryquestions.theoryanswers');
             return response()->json($test);
-        } else {
-            // return response()->json([auth()->user()->id]);
-            return response()->json(["message" => 'You don\'t have the permission!'], 403);
-        }
     }
 }
