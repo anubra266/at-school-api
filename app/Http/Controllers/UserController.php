@@ -11,7 +11,6 @@ class UserController extends Controller
         $user =  $request->user();
         $user->load('roles');
         return response()->json($user);
-
     }
     public function show(Request $request, $userId)
     {

@@ -13,13 +13,14 @@ class TheoryQuestionController extends Controller
     {
         $data = $request->validate(['question' => 'required']);
         $question = $test->theoryquestions()->create($data);
+        event(new \App\Events\UpdateTheoryTests()); 
         return response()->json($question);
     }
 
     public function submit(Request $request, TheoryQuestion $question)
     {
         $data = $request->validate(
-            [
+            [ 
                 'answer' => 'required'
             ]
         );

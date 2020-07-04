@@ -18,6 +18,7 @@ class ObjectiveQuestionController extends Controller
         $question = $test->objectivequestions()->create($data['question']);
         $options = $data['options'];
         $question->objectiveoptions()->createMany($options);
+        event(new \App\Events\UpdateTestQuestions()); 
         return response()->json('Question added Successfully');
     }
     public function storeexcel(ExcelUploadRequest $request, ObjectiveTest $test)
@@ -31,6 +32,7 @@ class ObjectiveQuestionController extends Controller
             $question = $test->objectivequestions()->create($the_question);
             $question->objectiveoptions()->createMany($the_options);
         }
+        event(new \App\Events\UpdateTestQuestions()); 
         return response()->json('Excel file Questions uploaded Successfully');
     }
 }

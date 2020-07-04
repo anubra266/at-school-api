@@ -16,7 +16,7 @@ class ObjectiveTestController extends Controller
         $classroom = Classroom::where('slug', $slug)->first();
         return $classroom;
     }
-    public function index(Request $request)
+    public function index(Request $request) 
     {
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->objectivetests()

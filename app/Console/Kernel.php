@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\TestSockets::class,
     ];
 
     /**
@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function commands()
-    {
+    { 
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');

@@ -65,6 +65,8 @@ class ClassroomController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
+        event(new \App\Events\UpdateClassrooms()); 
+        event(new \App\Events\UpdateEnvirons()); 
         return response()->json($classroom);
     }
 
@@ -108,6 +110,8 @@ class ClassroomController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
+        event(new \App\Events\UpdateClasses()); 
+        event(new \App\Events\UpdateClassrooms()); 
         $success_message = "You've been added to " . $classroom->name . " Classroom successfully!";
         return response()->json($success_message, 200);
     }

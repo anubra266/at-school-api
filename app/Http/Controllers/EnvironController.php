@@ -56,6 +56,8 @@ class EnvironController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
+        event(new \App\Events\UpdateEnvirons()); 
+        event(new \App\Events\UpdateOrganizations()); 
         return response()->json($environ);
     }
 }

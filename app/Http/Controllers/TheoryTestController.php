@@ -21,7 +21,7 @@ class TheoryTestController extends Controller
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
             ->whereDate('deadline', ">=", Carbon::today()->toDateString())
-            ->get();
+            ->get(); 
         return response()->json($tests);
     }
 
