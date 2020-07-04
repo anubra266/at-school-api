@@ -21,7 +21,7 @@ class TheoryTestController extends Controller
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
             ->whereDate('deadline', ">=", Carbon::today()->toDateString())
-            ->get(); 
+            ->get();
         return response()->json($tests);
     }
 
@@ -40,7 +40,7 @@ class TheoryTestController extends Controller
     {
         $classroom = Classroom::where('id', $test->classroom_id)->first();
         if ($classroom->user_id == auth()->user()->id) {
-            $test->load('theoryquestions');
+            $test->load('theoryquestions.theoryanswers');
             return response()->json($test);
         } else {
             // return response()->json([auth()->user()->id]);
