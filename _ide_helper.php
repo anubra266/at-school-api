@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 7.11.0 on 2020-07-01 20:51:25.
+ * Generated for Laravel 7.18.0 on 2020-07-04 13:24:10.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -777,6 +777,19 @@ namespace Illuminate\Support\Facades {
         {
                         /** @var \Illuminate\Foundation\Application $instance */
                         return $instance->getLoadedProviders();
+        }
+        
+        /**
+         * Determine if the given service provider is loaded.
+         *
+         * @param string $provider
+         * @return bool 
+         * @static 
+         */ 
+        public static function providerIsLoaded($provider)
+        {
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        return $instance->providerIsLoaded($provider);
         }
         
         /**
@@ -4079,110 +4092,6 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
-     * @see \Illuminate\Encryption\Encrypter
-     */ 
-    class Crypt {
-        
-        /**
-         * Determine if the given key and cipher combination is valid.
-         *
-         * @param string $key
-         * @param string $cipher
-         * @return bool 
-         * @static 
-         */ 
-        public static function supported($key, $cipher)
-        {
-                        return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
-        }
-        
-        /**
-         * Create a new encryption key for the given cipher.
-         *
-         * @param string $cipher
-         * @return string 
-         * @static 
-         */ 
-        public static function generateKey($cipher)
-        {
-                        return \Illuminate\Encryption\Encrypter::generateKey($cipher);
-        }
-        
-        /**
-         * Encrypt the given value.
-         *
-         * @param mixed $value
-         * @param bool $serialize
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static 
-         */ 
-        public static function encrypt($value, $serialize = true)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->encrypt($value, $serialize);
-        }
-        
-        /**
-         * Encrypt a string without serialization.
-         *
-         * @param string $value
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\EncryptException
-         * @static 
-         */ 
-        public static function encryptString($value)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->encryptString($value);
-        }
-        
-        /**
-         * Decrypt the given value.
-         *
-         * @param string $payload
-         * @param bool $unserialize
-         * @return mixed 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */ 
-        public static function decrypt($payload, $unserialize = true)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->decrypt($payload, $unserialize);
-        }
-        
-        /**
-         * Decrypt the given string without unserialization.
-         *
-         * @param string $payload
-         * @return string 
-         * @throws \Illuminate\Contracts\Encryption\DecryptException
-         * @static 
-         */ 
-        public static function decryptString($payload)
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->decryptString($payload);
-        }
-        
-        /**
-         * Get the encryption key.
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getKey()
-        {
-                        /** @var \Illuminate\Encryption\Encrypter $instance */
-                        return $instance->getKey();
-        }
-         
-    }
-
-    /**
-     * 
-     *
      * @see \Illuminate\Database\DatabaseManager
      * @see \Illuminate\Database\Connection
      */ 
@@ -5801,6 +5710,19 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Guess the file extension from the mime-type of a given file.
+         *
+         * @param string $path
+         * @return string|null 
+         * @static 
+         */ 
+        public static function guessExtension($path)
+        {
+                        /** @var \Illuminate\Filesystem\Filesystem $instance */
+                        return $instance->guessExtension($path);
+        }
+        
+        /**
          * Get the file type of a given file.
          *
          * @param string $path
@@ -6545,33 +6467,33 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
-     * @method static \Illuminate\Http\Client\PendingRequest asJson()
+     * @method static \Illuminate\Http\Client\PendingRequest accept(string $contentType)
+     * @method static \Illuminate\Http\Client\PendingRequest acceptJson()
      * @method static \Illuminate\Http\Client\PendingRequest asForm()
-     * @method static \Illuminate\Http\Client\PendingRequest attach(string $name, string $contents, string|null $filename = null, array $headers = [])
+     * @method static \Illuminate\Http\Client\PendingRequest asJson()
      * @method static \Illuminate\Http\Client\PendingRequest asMultipart()
+     * @method static \Illuminate\Http\Client\PendingRequest attach(string $name, string $contents, string|null $filename = null, array $headers = [])
+     * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
      * @method static \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
-     * @method static \Illuminate\Http\Client\PendingRequest acceptJson()
-     * @method static \Illuminate\Http\Client\PendingRequest accept(string $contentType)
      * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleep = 0)
-     * @method static \Illuminate\Http\Client\PendingRequest withHeaders(array $headers)
+     * @method static \Illuminate\Http\Client\PendingRequest stub(callable $callback)
+     * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
      * @method static \Illuminate\Http\Client\PendingRequest withBasicAuth(string $username, string $password)
-     * @method static \Illuminate\Http\Client\PendingRequest withDigestAuth(string $username, string $password)
-     * @method static \Illuminate\Http\Client\PendingRequest withToken(string $token, string $type = 'Bearer')
      * @method static \Illuminate\Http\Client\PendingRequest withCookies(array $cookies, string $domain)
+     * @method static \Illuminate\Http\Client\PendingRequest withDigestAuth(string $username, string $password)
+     * @method static \Illuminate\Http\Client\PendingRequest withHeaders(array $headers)
+     * @method static \Illuminate\Http\Client\PendingRequest withOptions(array $options)
+     * @method static \Illuminate\Http\Client\PendingRequest withToken(string $token, string $type = 'Bearer')
      * @method static \Illuminate\Http\Client\PendingRequest withoutRedirecting()
      * @method static \Illuminate\Http\Client\PendingRequest withoutVerifying()
-     * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
-     * @method static \Illuminate\Http\Client\PendingRequest withOptions(array $options)
-     * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
+     * @method static \Illuminate\Http\Client\Response delete(string $url, array $data = [])
      * @method static \Illuminate\Http\Client\Response get(string $url, array $query = [])
      * @method static \Illuminate\Http\Client\Response head(string $url, array $query = [])
-     * @method static \Illuminate\Http\Client\Response post(string $url, array $data = [])
      * @method static \Illuminate\Http\Client\Response patch(string $url, array $data = [])
+     * @method static \Illuminate\Http\Client\Response post(string $url, array $data = [])
      * @method static \Illuminate\Http\Client\Response put(string $url, array $data = [])
-     * @method static \Illuminate\Http\Client\Response delete(string $url, array $data = [])
      * @method static \Illuminate\Http\Client\Response send(string $method, string $url, array $options = [])
-     * @method static \Illuminate\Http\Client\PendingRequest stub(callable $callback)
      * @see \Illuminate\Http\Client\Factory
      */ 
     class Http {
@@ -7952,8 +7874,8 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
-     * @method static string sendResetLink(array $credentials)
      * @method static mixed reset(array $credentials, \Closure $callback)
+     * @method static string sendResetLink(array $credentials)
      * @see \Illuminate\Auth\Passwords\PasswordBroker
      */ 
     class Password {
@@ -10345,8 +10267,8 @@ namespace Illuminate\Support\Facades {
         
         /**
          * Gets the preferred format for the response by inspecting, in the following order:
-         *   * the request format set using setRequestFormat
-         *   * the values of the Accept HTTP header
+         *   * the request format set using setRequestFormat;
+         *   * the values of the Accept HTTP header.
          * 
          * Note that if you use this method, you should send the "Vary: Accept" header
          * in the response to prevent any issues with intermediary HTTP caches.
@@ -10441,6 +10363,19 @@ namespace Illuminate\Support\Facades {
             //Method inherited from \Symfony\Component\HttpFoundation\Request            
                         /** @var \Illuminate\Http\Request $instance */
                         return $instance->isXmlHttpRequest();
+        }
+        
+        /**
+         * Checks whether the client browser prefers safe content or not according to RFC8674.
+         *
+         * @see https://tools.ietf.org/html/rfc8674
+         * @static 
+         */ 
+        public static function preferSafeContent()
+        {
+            //Method inherited from \Symfony\Component\HttpFoundation\Request            
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->preferSafeContent();
         }
         
         /**
@@ -11294,13 +11229,13 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
-     * @method static \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
-     * @method static \Illuminate\Routing\RouteRegistrar where(array  $where)
-     * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
      * @method static \Illuminate\Routing\RouteRegistrar as(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
      * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar namespace(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
+     * @method static \Illuminate\Routing\RouteRegistrar where(array  $where)
      * @see \Illuminate\Routing\Router
      */ 
     class Route {
@@ -14943,7 +14878,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Start a component rendering process.
          *
-         * @param \Illuminate\View\View|string $view
+         * @param \Illuminate\View\View|\Closure|string $view
          * @param array $data
          * @return void 
          * @static 
@@ -16325,8 +16260,6 @@ namespace  {
 
     class Cookie extends \Illuminate\Support\Facades\Cookie {}
 
-    class Crypt extends \Illuminate\Support\Facades\Crypt {}
-
     class DB extends \Illuminate\Support\Facades\DB {}
 
     class Eloquent extends \Illuminate\Database\Eloquent\Model {         
@@ -17044,7 +16977,7 @@ namespace  {
             }
          
             /**
-             * Execute a callback over each item while chunking by id.
+             * Execute a callback over each item while chunking by ID.
              *
              * @param callable $callback
              * @param int $count
@@ -17091,7 +17024,7 @@ namespace  {
              * Pass the query to a given callback.
              *
              * @param callable $callback
-             * @return \Illuminate\Database\Query\Builder 
+             * @return \Illuminate\Database\Eloquent\Builder 
              * @static 
              */ 
             public static function tap($callback)
@@ -17406,7 +17339,7 @@ namespace  {
             /**
              * Add a subselect expression to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param \Closure|$this|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder 
              * @throws \InvalidArgumentException
