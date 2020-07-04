@@ -20,14 +20,8 @@ class TheoryTestController extends Controller
 
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
-            ->whereDate('deadline', ">=", Carbon::today()->toDateString())
+            ->where('deadline', ">=", Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s'))
             ->get();
-        $tests = $tests->filter(function ($test){
-            $question = $test->theoryquestions()->first();
-            $answer = $question->theoryanswers()->where('user_id',auth()->user()->id);
-            return count($answer)<0;
-        });
-        $tests->all();
         return response()->json($tests);
     }
 
