@@ -22,6 +22,12 @@ class TheoryTestController extends Controller
         $tests = $classroom->theorytests()
             ->whereDate('deadline', ">=", Carbon::today()->toDateString())
             ->get();
+        $tests = $tests->filter(function ($test){
+            $question = $test->theoryquestions()->first();
+            $answer = $question->theoryanswers()->where('user_id',auth()->user()->id);
+            return count($answer)<0;
+        });
+        $tests->all();
         return response()->json($tests);
     }
 
@@ -39,7 +45,7 @@ class TheoryTestController extends Controller
     public function show(TheoryTest $test)
     {
         $classroom = Classroom::where('id', $test->classroom_id)->first();
-        if ($classroom->user_id == auth()->user()->id) {
+        if ($classroom->user_id == auth()->user()->id||$classroom->users()->pluck('user_id')->contains(auth()->user()->id)) {
             $test->load('theoryquestions.theoryanswers');
             return response()->json($test);
         } else {
