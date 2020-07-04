@@ -38,7 +38,9 @@ class TheoryTestController extends Controller
     }
     public function show(TheoryTest $test)
     {
-            $test->load('theoryquestions.theoryanswers');
+            $question = $test->theoryquestions()->first();
+            $test['theoryquestion']= $question;
+            $test->theoryquestion['theoryanswer'] = $question->theoryanswers()->where('user_id',auth()->user()->id)->get();
             return response()->json($test);
     }
 }
