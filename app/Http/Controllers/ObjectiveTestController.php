@@ -16,20 +16,23 @@ class ObjectiveTestController extends Controller
         $classroom = Classroom::where('slug', $slug)->first();
         return $classroom;
     }
-    public function index(Request $request) 
+    public function index(Request $request)
     {
+        $now = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s');
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->objectivetests()
-            ->whereDate('deadline', ">=", Carbon::today()->toDateString())
-            ->whereDate('starttime', "<=", Carbon::today()->toDateString())
+            ->where('deadline', ">", $now)
+            ->where('starttime', "<=", $now)
             ->get();
-            $tests->load('objectivequestions');
+        $tests->load('objectivequestions');
         $tests->load('cbts');
-        $tests_not_done = $tests->reject(function($test,$index){
+        // //*filter done tests
+        $tests = $tests->filter(function($test, $index){
             $cbts = $test->cbts->pluck('user_id');
-            return $cbts->contains(auth()->user()->id);
-        });
-        $tests = $tests_not_done->all();
+            $done = $cbts->contains(auth()->user()->id);
+            return !$done;
+        })->values()->all();
+
         return response()->json($tests);
     }
     public function store(Request $request)
@@ -88,7 +91,7 @@ class ObjectiveTestController extends Controller
             // }
             //?if not, give the error
             //return response()->json('nothing');
-            //store cbt record  database 
+            //store cbt record  database
             $cbt_details = [];
             $cbt_details['user_id'] = auth()->user()->id;
             $savecbt = $test->cbts()->create($cbt_details);

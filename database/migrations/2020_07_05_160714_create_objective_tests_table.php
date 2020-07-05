@@ -16,9 +16,9 @@ class CreateObjectiveTestsTable extends Migration
         Schema::create('objective_tests', function (Blueprint $table) {
             $table->id();
             $table->text('title');
-            $table->text('starttime');
+            $table->datetime('starttime');
             $table->bigInteger('duration');
-            $table->text('deadline');
+            $table->datetime('deadline');
             $table->unsignedbiginteger('classroom_id');
             $table->timestamps();
         });

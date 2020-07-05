@@ -17,10 +17,10 @@ class TheoryTestController extends Controller
     }
     public function index(Request $request)
     {
-
+        $now = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s');
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
-            ->where('deadline', ">=", Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s'))
+            ->where('deadline', ">", $now)
             ->get();
         return response()->json($tests);
     }
