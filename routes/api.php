@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::post('storetheorytest', 'TheoryTestController@store');
     Route::get('theorytest/{test}', 'TheoryTestController@show');
+    Route::get('theorytestdetails/{test}', 'TheoryTestController@showdetails');
 
     Route::post('theoryquestion/{test}', 'TheoryQuestionController@store');
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');

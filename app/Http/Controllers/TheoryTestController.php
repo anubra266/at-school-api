@@ -43,4 +43,8 @@ class TheoryTestController extends Controller
             $test->theoryquestion['theoryanswer'] = $question->theoryanswers()->where('user_id',auth()->user()->id)->get();
             return response()->json($test);
     }
+    public function showdetails(TheoryTest $test)
+    {
+            return response()->json($test);
+    }
 }
