@@ -18,7 +18,7 @@ class CreateTheoryTestsTable extends Migration
             $table->text('title');
             $table->timestamp('deadline');
             $table->unsignedbiginteger('classroom_id');
-            $table->bigInteger('total');
+            $table->bigInteger('total'); 
             $table->timestamps();
         });
     }
