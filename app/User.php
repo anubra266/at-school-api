@@ -6,13 +6,14 @@ use App\Role;
 use App\Classroom;
 use App\Organization;
 use App\TheoryAnswer;
+use App\TheoryResult;
 use App\ObjectiveAnswer;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
@@ -68,5 +69,8 @@ class User extends Authenticatable
     }
     public function objectiveanswers(){
         return $this->hasMany(ObjectiveAnswer::class);
+    }
+    public function theoryresults(){
+        return $this->hasMany(TheoryResult::class);
     }
 }

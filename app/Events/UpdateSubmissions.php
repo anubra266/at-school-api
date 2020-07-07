@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateEnvirons implements ShouldBroadcast
+class UpdateSubmissions implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -18,7 +18,7 @@ class UpdateEnvirons implements ShouldBroadcast
      * Create a new event instance.
      *
      * @return void
-     */ 
+     */
     public function __construct()
     {
         //
@@ -32,7 +32,7 @@ class UpdateEnvirons implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "environs"
+            "submissions"
         ];
     }
 }

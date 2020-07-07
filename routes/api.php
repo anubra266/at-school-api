@@ -36,8 +36,12 @@ Route::middleware('auth:api')->group(function() {
     Route::post('joinclassroom', 'ClassroomController@join');
     Route::post('classroomrole', 'ClassroomController@role');
     Route::post('classroomcheck', 'ClassroomController@check');
+    Route::post('classroommembers', 'ClassroomController@members');
 
+    Route::get('theorytestsubmissions/{test}', 'TheoryTestController@submissions');
+    Route::post('marktestdetails/{test}', 'TheoryTestController@markdetails');
     Route::post('theorytests', 'TheoryTestController@index');
+    Route::post('alltheorytests', 'TheoryTestController@mark');
 
     Route::post('storetheorytest', 'TheoryTestController@store');
     Route::get('theorytest/{test}', 'TheoryTestController@show');
@@ -45,6 +49,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::post('theoryquestion/{test}', 'TheoryQuestionController@store');
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');
+    Route::post('finishmarktest/{test}', 'TheoryQuestionController@finishmark');
     Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
 
     Route::post('objectivetests', 'ObjectiveTestController@index');

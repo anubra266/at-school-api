@@ -3,19 +3,18 @@
 namespace App;
 
 use App\User;
-use App\TheoryQuestion;
+use App\TheoryTest;
 use Illuminate\Database\Eloquent\Model;
 
-class TheoryAnswer extends Model
+class TheoryResult extends Model
 {
     protected $guarded = [];
 
-    public function theoryquestion(){
-        return $this->belongsTo(TheoryQuestion::class);
+    public function theorytest(){
+        return $this->belongsTo(TheoryTest::class);
     }
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 }
- 

@@ -11,8 +11,13 @@ use Faker\Generator as Faker;
 
 class ClassroomController extends Controller
 {
-
-    public function index() 
+    public function checkclassroom($request)
+    {
+        $slug = $request->slug;
+        $classroom = Classroom::where('slug', $slug)->first();
+        return $classroom;
+    }
+    public function index()
     {
         $user = auth()->user();
         $classrooms = Classroom::where('user_id',$user->id)->get();
@@ -65,8 +70,8 @@ class ClassroomController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
-        event(new \App\Events\UpdateClassrooms()); 
-        event(new \App\Events\UpdateEnvirons()); 
+        event(new \App\Events\UpdateClassrooms());
+        event(new \App\Events\UpdateEnvirons());
         return response()->json($classroom);
     }
 
@@ -110,8 +115,9 @@ class ClassroomController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
-        event(new \App\Events\UpdateClasses()); 
-        event(new \App\Events\UpdateClassrooms()); 
+        event(new \App\Events\UpdateClasses());
+        event(new \App\Events\UpdateClassrooms());
+        event(new \App\Events\UpdateMembers());
         $success_message = "You've been added to " . $classroom->name . " Classroom successfully!";
         return response()->json($success_message, 200);
     }
@@ -143,5 +149,11 @@ class ClassroomController extends Controller
         } else {
             return response()->json('alien');
         }
+    }
+
+    public function members(Request $request){
+        $classroom = $this->checkclassroom($request);
+        $members = $classroom->users()->get();
+        return response()->json($members);
     }
 }
