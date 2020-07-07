@@ -38,10 +38,12 @@ Route::middleware('auth:api')->group(function() {
     Route::post('classroomcheck', 'ClassroomController@check');
     Route::post('classroommembers', 'ClassroomController@members');
 
+    Route::get('gettestresults/{test}', 'TheoryTestController@getresults');
     Route::get('theorytestsubmissions/{test}', 'TheoryTestController@submissions');
     Route::post('marktestdetails/{test}', 'TheoryTestController@markdetails');
     Route::post('theorytests', 'TheoryTestController@index');
     Route::post('alltheorytests', 'TheoryTestController@mark');
+    Route::post('alltheorytestsresults', 'TheoryTestController@results');
 
     Route::post('storetheorytest', 'TheoryTestController@store');
     Route::get('theorytest/{test}', 'TheoryTestController@show');
@@ -51,14 +53,17 @@ Route::middleware('auth:api')->group(function() {
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');
     Route::post('finishmarktest/{test}', 'TheoryQuestionController@finishmark');
     Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
-
+    
     Route::post('objectivetests', 'ObjectiveTestController@index');
 
+    Route::get('gettestoresults/{test}', 'ObjectiveTestController@getresults');
     Route::post('objectivetest', 'ObjectiveTestController@store');
     Route::get('showobjectivetest/{test}', 'ObjectiveTestController@show');
     Route::get('objectivetestreview/{test}', 'ObjectiveTestController@showreview');
     Route::get('objectivetestresult/{test}', 'ObjectiveTestController@showresult');
     Route::post('submitobjectivetest/{test}', 'ObjectiveTestController@submit');
+    Route::post('allobjectivetestsresults', 'ObjectiveTestController@results');
+    Route::post('allobjectivetests', 'ObjectiveTestController@mark');
 
     Route::post('addtoobjectivetest/{test}/question', 'ObjectiveQuestionController@store');
     Route::post('importobjectivetest/{test}/excel', 'ObjectiveQuestionController@storeexcel');

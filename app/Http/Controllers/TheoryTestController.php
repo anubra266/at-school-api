@@ -40,6 +40,28 @@ class TheoryTestController extends Controller
         })->values()->all();
         return response()->json($tests);
     }
+    public function results(Request $request)
+    {
+        $classroom = $this->checkclassroom($request);
+
+        $tests = $classroom->theorytests()->get();
+        $tests = $tests->filter(function($test){
+            $theoryresults = $test->theoryresults()->where('user_id',auth()->user()->id)->get();
+            $test->theoryresult = $theoryresults->first();
+            $theoryquestion = $test->theoryquestions()->first();
+            $theoryanswer = $theoryquestion->theoryanswers()->where('user_id',auth()->user()->id)->first();
+            $test->submitted = $theoryanswer;
+            return (count($theoryresults)>0)? true: false;
+        })->values()->all();
+        $tests = collect($tests);
+        $tests = $tests->sort(function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a->created_at > $b->created_at) ? -1 : 1;
+        })->values()->all();
+        return response()->json($tests);
+    }
     public function store(Request $request)
     {
         $getclassroom = $this->checkclassroom($request);
@@ -91,5 +113,13 @@ class TheoryTestController extends Controller
         $test->answer = $answer;
         $test->user = $answer->user()->first();
         return response()->json($test);
+    }
+    public function getresults(TheoryTest $test){
+        $classroom = Classroom::where('id',$test->classroom_id)->first();
+        
+        $results = $test->theoryresults()->get();
+        $results->load('user');
+
+        return response()->json([$results,$test]);
     }
 }

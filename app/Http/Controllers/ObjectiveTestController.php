@@ -35,6 +35,41 @@ class ObjectiveTestController extends Controller
 
         return response()->json($tests);
     }
+
+    public function mark(Request $request){
+        $classroom = $this->checkclassroom($request);
+        $tests = $classroom->objectivetests()->get();
+        $tests = collect($tests);
+        $tests = $tests->sort(function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a->created_at > $b->created_at) ? -1 : 1;
+        })->values()->all();
+        return response()->json($tests);
+    }
+
+    public function results(Request $request)
+    {
+        $classroom = $this->checkclassroom($request);
+
+        $tests = $classroom->objectivetests()->get();
+        $tests = $tests->filter(function($test){
+            $objectiveresults = $test->cbts()->where('user_id',auth()->user()->id)->get();
+            $test->cbtresult = $objectiveresults->first();
+            $objectivequestion = $test->objectivequestions()->first();
+            return (count($objectiveresults)>0)? true: false;
+        })->values()->all();
+        $tests = collect($tests);
+        $tests = $tests->sort(function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a->created_at > $b->created_at) ? -1 : 1;
+        })->values()->all();
+        return response()->json($tests);
+    }
+
     public function store(Request $request)
     {
         $getclassroom = $this->checkclassroom($request);
@@ -137,5 +172,14 @@ class ObjectiveTestController extends Controller
 
             return response()->json([$score, $total]);
         }
+    }
+
+    public function getresults(ObjectiveTest $test){
+        $classroom = Classroom::where('id',$test->classroom_id)->first();
+        
+        $results = $test->cbts()->get();
+        $results->load('user');
+
+        return response()->json([$results,$test]);
     }
 }

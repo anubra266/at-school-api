@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\ObjectiveTest;
 use App\ObjectiveAnswer;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,10 @@ class Cbt extends Model
 
     public function objectiveanswers(){
         return $this->hasMany(ObjectiveAnswer::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }
  

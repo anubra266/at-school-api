@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Cbt;
 use App\Role;
 use App\Classroom;
 use App\Organization;
@@ -72,5 +73,8 @@ class User extends Authenticatable
     }
     public function theoryresults(){
         return $this->hasMany(TheoryResult::class);
+    }
+    public function cbts(){
+        return $this->hasMany(Cbt::class);
     }
 }
