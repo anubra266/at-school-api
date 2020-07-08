@@ -24,6 +24,14 @@ class TheoryTestController extends Controller
         $tests = $classroom->theorytests()
             ->where('deadline', ">", $now)
             ->get();
+            //*Show only tests that hae not been marked
+            $tests = $tests->filter(function($test){
+            $marked = $test->theoryresults()->where('user_id',auth()->user()->id)->get();
+            if(count($marked)>0){
+                return false;
+            }else{
+                return true;
+            }})->values()->all();
         return response()->json($tests);
     }
     public function mark(Request $request)
@@ -112,11 +120,16 @@ class TheoryTestController extends Controller
         $test->question = $question;
         $test->answer = $answer;
         $test->user = $answer->user()->first();
+        $marked = $test->theoryresults()->where('user_id',$test->user->id)->get();
+        if(count($marked)>0){
+            //*then update it
+            $test->score = $marked->first()->score;
+        }
         return response()->json($test);
     }
     public function getresults(TheoryTest $test){
         $classroom = Classroom::where('id',$test->classroom_id)->first();
-        
+
         $results = $test->theoryresults()->get();
         $results->load('user');
 
