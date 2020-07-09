@@ -14,7 +14,7 @@ class EnvironController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $environs = Environ::where('user_id',$user->id)->get();
+        $environs = $user->environs()->get();
         $environs->load('classrooms');
         return response()->json($environs);
     }
@@ -56,8 +56,8 @@ class EnvironController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
-        event(new \App\Events\UpdateEnvirons()); 
-        event(new \App\Events\UpdateOrganizations()); 
+        event(new \App\Events\UpdateEnvirons());
+        event(new \App\Events\UpdateOrganizations());
         return response()->json($environ);
     }
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Cbt;
 use App\Role;
+use App\Environ;
 use App\Classroom;
 use App\Organization;
 use App\TheoryAnswer;
@@ -55,7 +56,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
-
+    public function environs()
+    {
+        return $this->hasMany(Environ::class);
+    }
     public function organizations()
     {
         return $this->hasMany(Organization::class);

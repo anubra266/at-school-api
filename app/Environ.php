@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\Classroom;
 use App\Organization;
 use Illuminate\Database\Eloquent\Model;
@@ -15,5 +16,8 @@ class Environ extends Model
     }
     public function classrooms(){
         return $this->hasMany(Classroom::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

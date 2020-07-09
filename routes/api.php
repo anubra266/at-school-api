@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::get('user', 'UserController@authed');
     Route::get('user/{userId}/detail', 'UserController@show');
+    Route::get('homeinfo', 'UserController@info');
 
     Route::get('organization', 'OrganizationController@index');
     Route::post('organization', 'OrganizationController@store');
@@ -53,7 +54,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');
     Route::post('finishmarktest/{test}', 'TheoryQuestionController@finishmark');
     Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
-    
+
     Route::post('objectivetests', 'ObjectiveTestController@index');
 
     Route::get('gettestoresults/{test}', 'ObjectiveTestController@getresults');
