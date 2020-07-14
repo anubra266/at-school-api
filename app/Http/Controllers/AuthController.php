@@ -14,7 +14,6 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-
         try {
 
 
@@ -22,6 +21,7 @@ class AuthController extends Controller
                 'firstName' => 'required',
                 'middleName' => 'required',
                 'lastName' => 'required',
+                'gender' => 'required',
                 'email' => 'required|email',
                 'telephone' => 'required',
                 'dateOfBirth' => 'required',
@@ -45,12 +45,14 @@ class AuthController extends Controller
                 'firstName' => $request->firstName,
                 'middleName' => $request->middleName,
                 'lastName' => $request->lastName,
+                'gender' => $request->gender,
                 'email' => $request->email,
                 'telephone' => $request->telephone,
                 'dateOfBirth' => $request->dateOfBirth,
                 'password' => bcrypt($request->password),
                 'profile_image' => $imageName
             ]);
+
             //*attach role of new
             $newbie = Role::where('role','new')->first();
             $newbie_id = $newbie->id;
