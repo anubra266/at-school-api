@@ -29,6 +29,7 @@ class AuthController extends Controller
                 'profile_image' => 'required'
                 ]);
 
+
                 // Get image file
                 //$image = $request->file('profile_image');
                 $image_64 = $request->profile_image;
@@ -39,7 +40,6 @@ class AuthController extends Controller
                 $image = str_replace(' ', '+', $image);
                 $imageName = time().Str::random(10).'.'.$extension;
                 Storage::disk('images')->put($imageName, base64_decode($image));
-
 
             $user = User::create([
                 'firstName' => $request->firstName,
