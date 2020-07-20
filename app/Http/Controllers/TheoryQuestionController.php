@@ -18,7 +18,13 @@ class TheoryQuestionController extends Controller
         event(new \App\Events\UpdateTheoryTests());
         return response()->json($question);
     }
-
+    public function edit(Request $request, TheoryQuestion $question)
+    {
+        $data = $request->validate(['question' => 'required']);
+        $question->update($data);
+        event(new \App\Events\UpdateTheoryTests());
+        return response()->json($question);
+    }
     public function submit(Request $request, TheoryQuestion $question)
     {
         $data = $request->validate(
@@ -55,7 +61,7 @@ class TheoryQuestionController extends Controller
         ]);
         $result['user_id'] = $answer->user_id;
         $result['total'] = $test->total;
-        
+
         //*Check if it has been marked before
         $marked = $test->theoryresults()->where('user_id',$answer->user_id)->get();
         if(count($marked)>0){

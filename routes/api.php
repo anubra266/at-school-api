@@ -46,11 +46,14 @@ Route::middleware('auth:api')->group(function() {
     Route::post('alltheorytests', 'TheoryTestController@mark');
     Route::post('alltheorytestsresults', 'TheoryTestController@results');
 
-    Route::post('storetheorytest', 'TheoryTestController@store');
     Route::get('theorytest/{test}', 'TheoryTestController@show');
     Route::get('theorytestdetails/{test}', 'TheoryTestController@showdetails');
+    Route::post('storetheorytest', 'TheoryTestController@store');
+    Route::post('addtheorytestsolution/{test}', 'TheoryTestController@addsolution');
+    Route::post('updatetheorytestsolution/{solution}', 'TheoryTestController@updatesolution');
 
     Route::post('theoryquestion/{test}', 'TheoryQuestionController@store');
+    Route::post('updatetheoryquestion/{question}', 'TheoryQuestionController@edit');
     Route::post('submittheoryquestion/{question}', 'TheoryQuestionController@submit');
     Route::post('finishmarktest/{test}', 'TheoryQuestionController@finishmark');
     Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
@@ -67,7 +70,10 @@ Route::middleware('auth:api')->group(function() {
     Route::post('allobjectivetests', 'ObjectiveTestController@mark');
 
     Route::post('addtoobjectivetest/{test}/question', 'ObjectiveQuestionController@store');
+    Route::post('editobjectivetest/{question}/question', 'ObjectiveQuestionController@edit');
     Route::post('importobjectivetest/{test}/excel', 'ObjectiveQuestionController@storeexcel');
+    Route::post('addobjectivetestsolution/{question}', 'ObjectiveQuestionController@addsolution');
+    Route::post('updateobjectivetestsolution/{solution}', 'ObjectiveQuestionController@updatesolution');
 
 
 });

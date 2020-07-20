@@ -85,14 +85,22 @@ class ObjectiveTestController extends Controller
     }
     public function show(ObjectiveTest $test)
     {
+        $classroom = Classroom::where('id',$test->classroom_id)->first();
+        $educator = $classroom->user_id;
         $test->load('objectivequestions.objectiveoptions');
+        $test->load('objectivequestions.objectivesolutions');
+        $test->solution;
         $questions = $test['objectivequestions'];
+
         for ($x = 0; $x < count($questions); $x++) {
             $question = $questions[$x];
             $options = $question['objectiveoptions'];
             for ($y = 0; $y < count($options); $y++) {
                 $option = $options[$y];
-                $option['is_correct'] = null;
+                if($educator!==auth()->user()->id){
+
+                    $option['is_correct'] = null;
+                }
             }
         }
         return response()->json($test);
@@ -169,6 +177,7 @@ class ObjectiveTestController extends Controller
             $cbt_update['score'] = $score;
             $cbt_update['total'] = $total;
             Cbt::where('id', $savecbt->id)->update($cbt_update);
+            event(new \App\Events\UpdateObjectiveTests());
 
             return response()->json([$score, $total]);
         }
@@ -176,10 +185,12 @@ class ObjectiveTestController extends Controller
 
     public function getresults(ObjectiveTest $test){
         $classroom = Classroom::where('id',$test->classroom_id)->first();
-        
+
         $results = $test->cbts()->get();
         $results->load('user');
-
+        $results = $results->filter(function($result){
+            return ($result->user->id!==auth()->user()->id);
+        })->values()->all();
         return response()->json([$results,$test]);
     }
 }

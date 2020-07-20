@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\TheoryTest;
 use App\TheoryAnswer;
 use App\TheoryQuestion;
+use App\TheorySolution;
 use Illuminate\Http\Request;
 
 class TheoryTestController extends Controller
@@ -27,7 +28,9 @@ class TheoryTestController extends Controller
             //*Show only tests that hae not been marked
             $tests = $tests->filter(function($test){
             $marked = $test->theoryresults()->where('user_id',auth()->user()->id)->get();
-            if(count($marked)>0){
+            $question = $test->theoryquestions()->first();
+
+            if(count($marked)>0||$question===null){
                 return false;
             }else{
                 return true;
@@ -84,6 +87,7 @@ class TheoryTestController extends Controller
     }
     public function show(TheoryTest $test)
     {
+
             $question = $test->theoryquestions()->first();
             $test['theoryquestion']= $question;
             $test->theoryquestion['theoryanswer'] = $question->theoryanswers()->where('user_id',auth()->user()->id)->get();
@@ -91,10 +95,17 @@ class TheoryTestController extends Controller
     }
     public function showdetails(TheoryTest $test)
     {
+            $test->load('theoryquestions');
+            $test->load('theorysolution');
             return response()->json($test);
     }
     public function submissions(TheoryTest $test){
-        $submissions = $test->theoryquestions()->first()->theoryanswers()->get();
+        $question =$test->theoryquestions()->first();
+
+        if($question===null){
+            return response()->json(['message'=>"There are no Set Questions, You should add some"],400);
+        }
+        $submissions = $question->theoryanswers()->get();
         $submissions->load('user');
         //*checked the already marked ones
         $submissions = $submissions->filter(function ($submission) use ($test){
@@ -134,5 +145,17 @@ class TheoryTestController extends Controller
         $results->load('user');
 
         return response()->json([$results,$test]);
+    }
+
+    public function addsolution(Request $request, TheoryTest $test){
+        $data = $request->validate(['solution'=>'required']);
+        $solution = $test->theorysolution()->create($data);
+        return response()->json($solution);
+    }
+
+    public function updatesolution(Request $request, TheorySolution $solution){
+        $data = $request->validate(['solution'=>'required']);
+        $solution->update($data);
+        return response()->json(["message"=>"Update Successful"],200);
     }
 }

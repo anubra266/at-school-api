@@ -10,17 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 class ObjectiveQuestion extends Model
 {
     protected $guarded = [];
-    
+
     public function objectivetests(){
         return $this->belongsTo(ObjectiveTest::class);
     }
- 
+
     public function objectiveoptions(){
         return $this->hasMany(ObjectiveOption::class);
     }
-    
+
     public function objectiveanswers(){
         return $this->hasMany(ObjectiveAnswer::class);
     }
 
+    public function objectivesolutions(){
+        return $this->hasMany(ObjectiveSolution::class);
+    }
 }

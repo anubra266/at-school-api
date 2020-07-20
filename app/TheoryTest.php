@@ -5,6 +5,7 @@ namespace App;
 use App\Classroom;
 use App\TheoryResult;
 use App\TheoryQuestion;
+use App\TheorySolution;
 use Illuminate\Database\Eloquent\Model;
 
 class TheoryTest extends Model
@@ -21,5 +22,9 @@ class TheoryTest extends Model
 
     public function theoryresults(){
         return $this->hasMany(TheoryResult::class);
+    }
+
+    public function theorysolution(){
+        return $this->hasMany(TheorySolution::class);
     }
 }
