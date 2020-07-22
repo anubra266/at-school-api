@@ -72,6 +72,7 @@ class TheoryQuestionController extends Controller
             $result = $test->theoryresults()->create($result);
         }
         event(new \App\Events\UpdateSubmissions());
+        event(new \App\Events\UpdateTheoryTests());
         return response()->json($result);
     }
 }

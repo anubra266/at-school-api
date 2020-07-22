@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('theorytestsubmissions/{test}', 'TheoryTestController@submissions');
     Route::post('marktestdetails/{test}', 'TheoryTestController@markdetails');
     Route::post('theorytests', 'TheoryTestController@index');
+    Route::post('theorysolutions', 'TheoryTestController@solutions');
     Route::post('alltheorytests', 'TheoryTestController@mark');
     Route::post('alltheorytestsresults', 'TheoryTestController@results');
 
@@ -59,6 +60,7 @@ Route::middleware('auth:api')->group(function() {
     Route::put('updatetheoryanswer/{answer}', 'TheoryQuestionController@resubmit');
 
     Route::post('objectivetests', 'ObjectiveTestController@index');
+    Route::post('objectivesolutions', 'ObjectiveTestController@solutions');
 
     Route::get('gettestoresults/{test}', 'ObjectiveTestController@getresults');
     Route::post('objectivetest', 'ObjectiveTestController@store');

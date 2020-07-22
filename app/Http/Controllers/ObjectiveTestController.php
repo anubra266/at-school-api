@@ -27,7 +27,7 @@ class ObjectiveTestController extends Controller
         $tests->load('objectivequestions');
         $tests->load('cbts');
         // //*filter done tests
-        $tests = $tests->filter(function($test, $index){
+        $tests = $tests->filter(function ($test, $index) {
             $cbts = $test->cbts->pluck('user_id');
             $done = $cbts->contains(auth()->user()->id);
             return !$done;
@@ -35,8 +35,47 @@ class ObjectiveTestController extends Controller
 
         return response()->json($tests);
     }
+    public function solutions(Request $request)
+    {
+        $now = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s');
+        $classroom = $this->checkclassroom($request);
+        $tests = $classroom->objectivetests()->get();
+        $tests->load('objectivequestions.objectivesolutions');
+        $tests->load('cbts');
+        $solutionCount = 0;
+        //* Show tests that have been done, and have solutions for some questions
+        $tests = $tests->filter(function ($test) use (&$solutionCount) {
+            $cbts = $test->cbts->pluck('user_id');
+            $done = $cbts->contains(auth()->user()->id);
+            if ($done) {
+                $hasSolutions = false;
+                //*check if it has solutions
+                $questions = $test->objectivequestions()->get();
+                foreach ($questions as $key => $question) {
+                    //*if it has solutions
+                    if (count($question->objectivesolutions) > 0) {
+                        $hasSolutions = true;
+                        $solutionCount += 1;
+                    }else{
+                        $newquestions = $test->objectivequestions->forget($key);
+                        $test->newquestions = $newquestions->values()->all();
+                    }
+                }
+                if ($hasSolutions) {
+                    return true;
+                }
+                return false;
+            }
+        })->values()->all();
+        foreach ($tests as $test) {
+            $test->taken = $test->cbts()->where('user_id', auth()->user()->id)->first()->created_at;
+            $test->solutions = $solutionCount;
+        }
+        return response()->json($tests);
+    }
 
-    public function mark(Request $request){
+    public function mark(Request $request)
+    {
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->objectivetests()->get();
         $tests = collect($tests);
@@ -54,11 +93,11 @@ class ObjectiveTestController extends Controller
         $classroom = $this->checkclassroom($request);
 
         $tests = $classroom->objectivetests()->get();
-        $tests = $tests->filter(function($test){
-            $objectiveresults = $test->cbts()->where('user_id',auth()->user()->id)->get();
+        $tests = $tests->filter(function ($test) {
+            $objectiveresults = $test->cbts()->where('user_id', auth()->user()->id)->get();
             $test->cbtresult = $objectiveresults->first();
             $objectivequestion = $test->objectivequestions()->first();
-            return (count($objectiveresults)>0)? true: false;
+            return (count($objectiveresults) > 0) ? true : false;
         })->values()->all();
         $tests = collect($tests);
         $tests = $tests->sort(function ($a, $b) {
@@ -85,7 +124,7 @@ class ObjectiveTestController extends Controller
     }
     public function show(ObjectiveTest $test)
     {
-        $classroom = Classroom::where('id',$test->classroom_id)->first();
+        $classroom = Classroom::where('id', $test->classroom_id)->first();
         $educator = $classroom->user_id;
         $test->load('objectivequestions.objectiveoptions');
         $test->load('objectivequestions.objectivesolutions');
@@ -97,7 +136,7 @@ class ObjectiveTestController extends Controller
             $options = $question['objectiveoptions'];
             for ($y = 0; $y < count($options); $y++) {
                 $option = $options[$y];
-                if($educator!==auth()->user()->id){
+                if ($educator !== auth()->user()->id) {
 
                     $option['is_correct'] = null;
                 }
@@ -183,14 +222,15 @@ class ObjectiveTestController extends Controller
         }
     }
 
-    public function getresults(ObjectiveTest $test){
-        $classroom = Classroom::where('id',$test->classroom_id)->first();
+    public function getresults(ObjectiveTest $test)
+    {
+        $classroom = Classroom::where('id', $test->classroom_id)->first();
 
         $results = $test->cbts()->get();
         $results->load('user');
-        $results = $results->filter(function($result){
-            return ($result->user->id!==auth()->user()->id);
+        $results = $results->filter(function ($result) {
+            return ($result->user->id !== auth()->user()->id);
         })->values()->all();
-        return response()->json([$results,$test]);
+        return response()->json([$results, $test]);
     }
 }

@@ -53,11 +53,13 @@ class ObjectiveQuestionController extends Controller
     public function addsolution(Request $request, ObjectiveQuestion $question){
         $data = $request->validate(['solution'=>'required']);
         $question->objectivesolutions()->create($data);
+        event(new \App\Events\UpdateSolutions());
         return response()->json(["message"=>"Solution saved successfully"]);
     }
     public function updatesolution(Request $request, ObjectiveSolution $solution){
         $data = $request->validate(["solution"=>"required"]);
         $solution->update($data);
+        event(new \App\Events\UpdateSolutions());
         return response()->json(["message"=>"Solution modeified successfully"]);
     }
 }
