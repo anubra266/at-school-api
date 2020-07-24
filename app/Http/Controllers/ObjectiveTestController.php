@@ -56,17 +56,20 @@ class ObjectiveTestController extends Controller
                     if (count($question->objectivesolutions) > 0) {
                         $hasSolutions = true;
                         $solutionCount += 1;
+                        $test->newquestions = $test->objectivequestions;
                     }else{
                         //*Add the filtered questions
                         $newquestions = $test->objectivequestions->forget($key);
                         $test->newquestions = $newquestions->values()->all();
                     }
                 }
+
                 if ($hasSolutions) {
                     return true;
                 }
                 return false;
             }
+            return false;
         })->values()->all();
         foreach ($tests as $test) {
             $test->taken = $test->cbts()->where('user_id', auth()->user()->id)->first()->created_at;
