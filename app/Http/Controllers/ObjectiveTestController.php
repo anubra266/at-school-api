@@ -82,6 +82,11 @@ class ObjectiveTestController extends Controller
     {
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->objectivetests()->get();
+        foreach ($tests as $test) {
+            $markings = $test->cbts()->get();
+            $marked = count($markings) > 0;
+            $test->marked = $marked;
+        }
         $tests = collect($tests);
         $tests = $tests->sort(function ($a, $b) {
             if ($a == $b) {

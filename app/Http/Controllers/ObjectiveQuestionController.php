@@ -11,7 +11,8 @@ use App\ObjectiveSolution;
 class ObjectiveQuestionController extends Controller
 {
 
-    public function store(Request $request, ObjectiveTest $test){
+    public function store(Request $request, ObjectiveTest $test)
+    {
         $data = $request->validate([
             "question.question" => 'required',
             "options.*.option" => 'required',
@@ -23,7 +24,8 @@ class ObjectiveQuestionController extends Controller
         event(new \App\Events\UpdateTestQuestions());
         return response()->json('Question added Successfully');
     }
-    public function edit(Request $request, ObjectiveQuestion $question){
+    public function edit(Request $request, ObjectiveQuestion $question)
+    {
         $data = $request->validate([
             "question.question" => 'required',
             "options.*.option" => 'required',
@@ -34,14 +36,13 @@ class ObjectiveQuestionController extends Controller
         $question->objectiveoptions()->createMany($data['options']);
         event(new \App\Events\UpdateTestQuestions());
         return response()->json('Question Modified Successfully');
-
     }
     public function storeexcel(ExcelUploadRequest $request, ObjectiveTest $test)
     {
 
         $datas = $request->validated()['datas'];
 
-        foreach ($datas as $key => $data) {
+        foreach ($datas as $data) {
             $the_question = $data['question'];
             $the_options = $data['options'];
             $question = $test->objectivequestions()->create($the_question);
@@ -50,16 +51,18 @@ class ObjectiveQuestionController extends Controller
         event(new \App\Events\UpdateTestQuestions());
         return response()->json('Excel file Questions uploaded Successfully');
     }
-    public function addsolution(Request $request, ObjectiveQuestion $question){
-        $data = $request->validate(['solution'=>'required']);
+    public function addsolution(Request $request, ObjectiveQuestion $question)
+    {
+        $data = $request->validate(['solution' => 'required']);
         $question->objectivesolutions()->create($data);
         event(new \App\Events\UpdateSolutions());
-        return response()->json(["message"=>"Solution saved successfully"]);
+        return response()->json(["message" => "Solution saved successfully"]);
     }
-    public function updatesolution(Request $request, ObjectiveSolution $solution){
-        $data = $request->validate(["solution"=>"required"]);
+    public function updatesolution(Request $request, ObjectiveSolution $solution)
+    {
+        $data = $request->validate(["solution" => "required"]);
         $solution->update($data);
         event(new \App\Events\UpdateSolutions());
-        return response()->json(["message"=>"Solution modeified successfully"]);
+        return response()->json(["message" => "Solution modeified successfully"]);
     }
 }

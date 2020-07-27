@@ -52,8 +52,8 @@ class TheoryTestController extends Controller
             $question = $test->theoryquestions()->first();
             $solution = $test->theorysolution()->first();
 
-            if (count($marked) > 0 && $solution!==null && $question!==null) {
-                $answer = $question->theoryanswers()->where('user_id',auth()->user()->id)->first();
+            if (count($marked) > 0 && $solution !== null && $question !== null) {
+                $answer = $question->theoryanswers()->where('user_id', auth()->user()->id)->first();
                 $test->result = $marked->first();
                 $test->answer = $answer;
                 $test->question = $question;
@@ -71,6 +71,11 @@ class TheoryTestController extends Controller
         $classroom = $this->checkclassroom($request);
 
         $tests = $classroom->theorytests()->get();
+        foreach ($tests as $test) {
+            $markings = $test->theoryresults()->get();
+            $marked = count($markings) > 0;
+            $test->marked = $marked;
+        }
         $tests = collect($tests);
         $tests = $tests->sort(function ($a, $b) {
             if ($a == $b) {
@@ -78,6 +83,7 @@ class TheoryTestController extends Controller
             }
             return ($a->created_at > $b->created_at) ? -1 : 1;
         })->values()->all();
+
         return response()->json($tests);
     }
     public function results(Request $request)
