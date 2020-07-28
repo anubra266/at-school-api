@@ -32,7 +32,7 @@ class UpdateMembers implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "members"
+            "classes"
         ];
     }
 }

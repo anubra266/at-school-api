@@ -32,7 +32,7 @@ class UpdateClassrooms implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "classrooms"
+            "classes"
         ];
     }
 }

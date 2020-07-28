@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Classroom;
 use Auth;
+use App\User;
+use Exception;
+use App\Classroom;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
 
-    public function update_profile(Request $request){
+    public function update_profile(Request $request)
+    {
 
         try {
 
@@ -29,6 +31,7 @@ class UserController extends Controller
 
 
             $user = Auth::user()->update($data);
+            event(new \App\Events\UpdateUser());
 
             return response()->json('Profile updated successfully', 200);
         }
@@ -40,6 +43,32 @@ class UserController extends Controller
             }
             return response()->json(["message" => "All fields are required!"], 500);
         }
+    }
+    public function update_password(Request $request)
+    {
+        try {
+
+            $passwords = $request->validate(["oldpassword" => 'password', "password" => 'required']);
+            if ($passwords['oldpassword'] === $passwords['password']) {
+                return response()->json(["message" => "The new password can't be same as old"], 400);
+            }
+            Auth::user()->update(["password" => bcrypt($passwords['password'])]);
+            event(new \App\Events\UpdateUser());
+            return response()->json("Password Changed Successfully");
+        } catch (Exception $e) {
+            if ($e->getcode() == 0) {
+                return response()->json(["message" => 'Incorrect Old password'], 400);
+            } else {
+                return response()->json(["message" => 'Sorry. Something went wrong. Try again later'], 400);
+            }
+        }
+    }
+    public function update_profile_image(Request $request)
+    {
+        $profile_image = $request->validate(["profile_image" => "required"]);
+        Auth::user()->update($profile_image);
+        event(new \App\Events\UpdateUser());
+        return response()->json("Profile Picture Updated Successfully");
     }
     public function authed(Request $request)
     {

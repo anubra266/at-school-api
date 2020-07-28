@@ -32,7 +32,7 @@ class UpdateSolutions implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "solutions"
+            "classes"
         ];
     }
 }

@@ -32,7 +32,7 @@ class UpdateSubmissions implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "submissions"
+            "classes"
         ];
     }
 }

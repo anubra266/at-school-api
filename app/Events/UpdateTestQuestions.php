@@ -32,7 +32,7 @@ class UpdateTestQuestions implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "tests"
+            "classes"
         ];
     }
 }

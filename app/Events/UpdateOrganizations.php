@@ -28,7 +28,7 @@ class UpdateOrganizations implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "organizations"
+            "classes"
         ];
     }
 }

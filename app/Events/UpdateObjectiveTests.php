@@ -32,7 +32,7 @@ class UpdateObjectiveTests implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            "objectivetests"
+            "classes"
         ];
     }
 }
