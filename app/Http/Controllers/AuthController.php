@@ -25,6 +25,8 @@ class AuthController extends Controller
                 'email' => 'required|email',
                 'telephone' => 'required',
                 'dateOfBirth' => 'required',
+                'school' => 'required',
+                'school_town' => 'required',
                 'password' => 'required|min:6',
                 'profile_image' => 'required'
                 ]);
@@ -49,6 +51,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'telephone' => $request->telephone,
                 'dateOfBirth' => $request->dateOfBirth,
+                'school' => $request->school,
+                'school_town' => $request->school_town,
                 'password' => bcrypt($request->password),
                 'profile_image' => $imageName
             ]);
