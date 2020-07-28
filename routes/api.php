@@ -21,6 +21,7 @@ Route::post('login', 'AuthController@login');
 
 Route::middleware('auth:api')->group(function() {
 
+    Route::post('update_profile', 'UserController@update_profile');
     Route::get('user', 'UserController@authed');
     Route::get('user/{userId}/detail', 'UserController@show');
     Route::get('homeinfo', 'UserController@info');

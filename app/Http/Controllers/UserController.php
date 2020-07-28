@@ -4,10 +4,43 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Classroom;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function update_profile(Request $request){
+
+        try {
+
+
+            $data = $request->validate([
+                'firstName' => 'required',
+                'middleName' => 'required',
+                'lastName' => 'required',
+                'gender' => 'required',
+                'email' => 'required|email',
+                'telephone' => 'required',
+                'dateOfBirth' => 'required',
+                'school' => 'required',
+                'school_town' => 'required'
+            ]);
+
+
+            $user = Auth::user()->update($data);
+
+            return response()->json('Profile updated successfully', 200);
+        }
+
+        //catch exception
+        catch (Exception $e) {
+            if ($e->getcode() == 23000) {
+                return response()->json(['message' => 'Email already exists!'], 403);
+            }
+            return response()->json(["message" => "All fields are required!"], 500);
+        }
+    }
     public function authed(Request $request)
     {
         $user =  $request->user();
