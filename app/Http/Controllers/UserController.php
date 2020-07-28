@@ -6,7 +6,9 @@ use Auth;
 use App\User;
 use Exception;
 use App\Classroom;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -65,8 +67,24 @@ class UserController extends Controller
     }
     public function update_profile_image(Request $request)
     {
-        $profile_image = $request->validate(["profile_image" => "required"]);
-        Auth::user()->update($profile_image);
+
+        $request->validate(["profile_image" => "required"]);
+        //*delete previous image
+        Storage::disk('images')->delete(auth()->user()->profile_image);
+
+        // Get image file
+
+        $image_64 = $request->profile_image;
+        $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];
+        $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
+        // find substring fro replace here eg: data:image/png;base64,
+        $image = str_replace($replace, '', $image_64);
+        $image = str_replace(' ', '+', $image);
+        $imageName = time() . Str::random(10) . '.' . $extension;
+        //*store new image
+        Storage::disk('images')->put($imageName, base64_decode($image));
+
+        Auth::user()->update(['profile_image' => $imageName]);
         event(new \App\Events\UpdateUser());
         return response()->json("Profile Picture Updated Successfully");
     }
