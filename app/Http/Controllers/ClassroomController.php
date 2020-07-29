@@ -17,6 +17,12 @@ class ClassroomController extends Controller
         $classroom = Classroom::where('slug', $slug)->first();
         return $classroom;
     }
+    public function checkclassroom_return(Request $request)
+    {
+        $slug = $request->slug;
+        $classroom = Classroom::where('slug', $slug)->first();
+        return response()->json($classroom);
+    }
     public function index()
     {
         $user = auth()->user();

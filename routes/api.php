@@ -34,6 +34,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('environ', 'EnvironController@index');
     Route::post('environ', 'EnvironController@store');
 
+    Route::post('checkclassroom', 'ClassroomController@checkclassroom_return');
     Route::get('classroom', 'ClassroomController@index');
     Route::post('classroom', 'ClassroomController@store');
     Route::get('joinedclassrooms', 'ClassroomController@studindex');
