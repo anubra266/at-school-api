@@ -139,6 +139,12 @@ class ClassroomController extends Controller
         return response()->json(false);
 
     }
+    public function name(Request $request){
+        $slug = $request->slug;
+        $classroom = Classroom::where('slug',$slug)->first();
+        return response()->json($classroom->name);
+
+    }
     public function check(Request $request)
     {
 

@@ -57,7 +57,7 @@ class ObjectiveTestController extends Controller
                         $hasSolutions = true;
                         $solutionCount += 1;
                         $test->newquestions = $test->objectivequestions;
-                    }else{
+                    } else {
                         //*Add the filtered questions
                         $newquestions = $test->objectivequestions->forget($key);
                         $test->newquestions = $newquestions->values()->all();

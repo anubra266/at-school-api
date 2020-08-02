@@ -40,6 +40,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('joinedclassrooms', 'ClassroomController@studindex');
     Route::post('joinclassroom', 'ClassroomController@join');
     Route::post('classroomrole', 'ClassroomController@role');
+    Route::post('classroomname', 'ClassroomController@name');
     Route::post('classroomcheck', 'ClassroomController@check');
     Route::post('classroommembers', 'ClassroomController@members');
 

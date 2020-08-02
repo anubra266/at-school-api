@@ -24,7 +24,8 @@ class TheoryTestController extends Controller
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
             ->where('deadline', ">", $now)
-            ->get();
+            ->where('starttime', "<=", $now)
+        ->get();
         //*Show only tests that has not been marked and have questions set.
         $tests = $tests->filter(function ($test) {
             $marked = $test->theoryresults()->where('user_id', auth()->user()->id)->get();
@@ -43,7 +44,6 @@ class TheoryTestController extends Controller
         $now = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now()->addHour())->format('Y-m-d H:i:s');
         $classroom = $this->checkclassroom($request);
         $tests = $classroom->theorytests()
-            // ->where('deadline', ">", $now)
             ->get();
 
         //*Show only tests that have questions, have been marked and have solutions.
@@ -114,6 +114,7 @@ class TheoryTestController extends Controller
         $data = $request->validate([
             'title' => 'required',
             'deadline' => 'required',
+            'starttime' => 'required',
             'total' => 'required'
         ]);
         $classroom = $getclassroom;
