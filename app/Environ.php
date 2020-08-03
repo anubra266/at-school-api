@@ -11,7 +11,7 @@ class Environ extends Model
 {
     protected $guarded = [];
 
-    public function organizations(){
+    public function organization(){
         return $this->belongsTo(Organization::class);
     }
     public function classrooms(){

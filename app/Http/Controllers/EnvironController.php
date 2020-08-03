@@ -15,7 +15,7 @@ class EnvironController extends Controller
     {
         $user = auth()->user();
         $environs = $user->environs()->get();
-        $environs->load('classrooms');
+        $environs->load('classrooms.users');
         return response()->json($environs);
     }
     public function store(Request $request, Faker $faker)

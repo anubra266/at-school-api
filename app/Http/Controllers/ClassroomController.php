@@ -26,7 +26,7 @@ class ClassroomController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $classrooms = Classroom::where('user_id',$user->id)->get();
+        $classrooms = Classroom::where('user_id', $user->id)->get();
         $classrooms->load('users');
         return response()->json($classrooms);
     }
@@ -128,29 +128,32 @@ class ClassroomController extends Controller
         return response()->json($success_message, 200);
     }
 
-    public function role(Request $request){
+    public function role(Request $request)
+    {
         $slug = $request->slug;
-        $classroom = Classroom::where('slug',$slug)->first();
+        $classroom = Classroom::where('slug', $slug)->first();
         $classroom_educator = $classroom->user_id;
         $user_id = auth()->user()->id;
-        if($classroom_educator==$user_id){
+        if ($classroom_educator == $user_id) {
             return response()->json(true);
         }
         return response()->json(false);
-
     }
-    public function name(Request $request){
+    public function name(Request $request)
+    {
         $slug = $request->slug;
-        $classroom = Classroom::where('slug',$slug)->first();
+        $classroom = Classroom::where('slug', $slug)->first();
         return response()->json($classroom->name);
-
     }
     public function check(Request $request)
     {
 
         $slug = $request->slug;
 
-        $classroom = Classroom::where('slug',$slug)->first();
+        $classroom = Classroom::where('slug', $slug)->first();
+        $environ = $classroom->environ()->first();
+        $organization = $environ->organization()->first();
+
         $user_id = auth()->user()->id;
         $classroom_users = $classroom->users()->pluck('user_id');
 
@@ -158,12 +161,17 @@ class ClassroomController extends Controller
             return response()->json('member');
         } elseif ($classroom->user_id == auth()->user()->id) {
             return response()->json('creator');
+        } elseif ($environ->user_id == auth()->user()->id) {
+            return response()->json('boss');
+        } elseif ($organization->user_id == auth()->user()->id) {
+            return response()->json('boss');
         } else {
             return response()->json('alien');
         }
     }
 
-    public function members(Request $request){
+    public function members(Request $request)
+    {
         $classroom = $this->checkclassroom($request);
         $members = $classroom->users()->get();
         return response()->json($members);

@@ -16,7 +16,7 @@ class OrganizationController extends Controller
     {
         $user = auth()->user();
         $organizations = Organization::where('user_id',$user->id)->get();
-        $organizations->load('environs');
+        $organizations->load('environs.classrooms.users');
         return response()->json($organizations);
     }
     public function store(Request $request, Faker $faker)
@@ -50,7 +50,7 @@ class OrganizationController extends Controller
             //*remove newbie role
             $user->roles()->detach($new_role_id);
         }
-        event(new \App\Events\UpdateOrganizations()); 
+        event(new \App\Events\UpdateOrganizations());
         return response()->json($new_organization);
     }
 }

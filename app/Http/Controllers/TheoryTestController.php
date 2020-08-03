@@ -119,6 +119,7 @@ class TheoryTestController extends Controller
         ]);
         $classroom = $getclassroom;
         $test = $classroom->theorytests()->create($data);
+        event(new \App\Events\UpdateTheoryTests());
         return response()->json($test);
     }
     public function show(TheoryTest $test)

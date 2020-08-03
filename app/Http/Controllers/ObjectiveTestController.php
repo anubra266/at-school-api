@@ -129,6 +129,7 @@ class ObjectiveTestController extends Controller
         ]);
         $classroom = $getclassroom;
         $test = $classroom->objectivetests()->create($data);
+        event(new \App\Events\UpdateObjectiveTests());
         return response()->json($test);
     }
     public function show(ObjectiveTest $test)

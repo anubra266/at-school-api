@@ -12,7 +12,7 @@ class Classroom extends Model
 {
     protected $guarded = [];
 
-    public function environs(){
+    public function environ(){
         return $this->belongsTo(Environ::class);
     }
 
