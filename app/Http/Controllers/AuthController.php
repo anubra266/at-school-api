@@ -17,7 +17,7 @@ class AuthController extends Controller
         try {
 
 
-            $request->validate([
+            $user = $request->validate([
                 'firstName' => 'required',
                 'middleName' => 'required',
                 'lastName' => 'required',
@@ -27,41 +27,33 @@ class AuthController extends Controller
                 'dateOfBirth' => 'required',
                 'school' => 'required',
                 'school_town' => 'required',
+                'initialRole' => 'required',
                 'password' => 'required|min:6',
                 'profile_image' => 'required'
-                ]);
-
-
-                // Get image file
-                //$image = $request->file('profile_image');
-                $image_64 = $request->profile_image;
-                $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];
-                $replace = substr($image_64, 0, strpos($image_64, ',')+1);
-                // find substring fro replace here eg: data:image/png;base64,
-                $image = str_replace($replace, '', $image_64);
-                $image = str_replace(' ', '+', $image);
-                $imageName = time().Str::random(10).'.'.$extension;
-                Storage::disk('images')->put($imageName, base64_decode($image));
-
-            $user = User::create([
-                'firstName' => $request->firstName,
-                'middleName' => $request->middleName,
-                'lastName' => $request->lastName,
-                'gender' => $request->gender,
-                'email' => $request->email,
-                'telephone' => $request->telephone,
-                'dateOfBirth' => $request->dateOfBirth,
-                'school' => $request->school,
-                'school_town' => $request->school_town,
-                'password' => bcrypt($request->password),
-                'profile_image' => $imageName
             ]);
 
+
+            // Get image file
+            //$image = $request->file('profile_image');
+            $image_64 = $request->profile_image;
+            $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];
+            $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
+            // find substring fro replace here eg: data:image/png;base64,
+            $image = str_replace($replace, '', $image_64);
+            $image = str_replace(' ', '+', $image);
+            $imageName = time() . Str::random(10) . '.' . $extension;
+            Storage::disk('images')->put($imageName, base64_decode($image));
+
+            $user['profile_image'] = $imageName;
+            $user['password'] = bcrypt($user['password']);
+
+            $user = User::create($user);
+
             //*attach role of new
-            $newbie = Role::where('role','new')->first();
+            $newbie = Role::where('role', 'new')->first();
             $newbie_id = $newbie->id;
             $user->roles()->attach($newbie_id);
-            return response()->json('User registered successfully',200);
+            return response()->json('User registered successfully', 200);
         }
 
         //catch exception
@@ -69,7 +61,8 @@ class AuthController extends Controller
             if ($e->getcode() == 23000) {
                 return response()->json(['message' => 'Email already exists!'], 403);
             }
-            return response()->json(["message"=>"All fields are required!"],500);
+            // return response()->json(["message" => "All fields are required!"], 500);
+            return response()->json(["message" => $e], 500);
         }
     }
 
