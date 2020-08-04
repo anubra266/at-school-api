@@ -97,7 +97,8 @@ class PasswordResetController extends Controller
             $user->notify(new PasswordResetSuccess($passwordReset));
             return response()->json(["message" => "Password reset was successful."]);
         } catch (\Throwable $th) {
-            return response()->json(["message" => "An error occured. Try again later!"], 400);
+            return response()->json(["message" => throwException($th)], 400);
+            // return response()->json(["message" => "An error occured. Try again later!"], 400);
         }
     }
 }
