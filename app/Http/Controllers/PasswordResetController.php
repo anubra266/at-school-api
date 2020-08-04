@@ -37,7 +37,6 @@ class PasswordResetController extends Controller
                 return response()->json(["message" => "We have e-mailed your password reset link!"]);
             } catch (\Throwable $th) {
                 return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
-                // return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
             }
     }
 
