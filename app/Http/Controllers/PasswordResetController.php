@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\Notifications\PasswordResetRequest;
-use App\Notifications\PasswordResetSuccess;
 use App\User;
+use Exception;
+use Carbon\Carbon;
 use App\PasswordReset;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use App\Notifications\PasswordResetRequest;
+use App\Notifications\PasswordResetSuccess;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordResetController extends Controller
 {
@@ -35,8 +36,8 @@ class PasswordResetController extends Controller
                     new PasswordResetRequest($passwordReset->token, $request->red_link)
                 );
                 return response()->json(["message" => "We have e-mailed your password reset link!"]);
-            } catch (\Exception $e) {
-                return response()->json(["message" => $e], 400);
+            } catch (Exception $e) {
+                return response()->json($e, 400);
                 // return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
             }
     }
@@ -97,7 +98,7 @@ class PasswordResetController extends Controller
         try {
             $user->notify(new PasswordResetSuccess($passwordReset));
             return response()->json(["message" => "Password reset was successful."]);
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
             return response()->json(["message" => "An error occured. Try again later!"], 400);
         }
     }
