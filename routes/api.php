@@ -18,8 +18,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
+Route::group([
+    // 'namespace' => 'Auth',
+    'middleware' => 'api',
+    'prefix' => 'password'
+], function () {
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
 
-Route::middleware('auth:api')->group(function() {
+
+Route::middleware('auth:api')->group(function () {
 
     Route::post('update_profile', 'UserController@update_profile');
     Route::post('update_password', 'UserController@update_password');
@@ -81,7 +91,4 @@ Route::middleware('auth:api')->group(function() {
     Route::post('importobjectivetest/{test}/excel', 'ObjectiveQuestionController@storeexcel');
     Route::post('addobjectivetestsolution/{question}', 'ObjectiveQuestionController@addsolution');
     Route::post('updateobjectivetestsolution/{solution}', 'ObjectiveQuestionController@updatesolution');
-
-
 });
-
