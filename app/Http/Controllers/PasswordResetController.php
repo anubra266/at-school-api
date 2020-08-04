@@ -35,8 +35,8 @@ class PasswordResetController extends Controller
                     new PasswordResetRequest($passwordReset->token, $request->red_link)
                 );
                 return response()->json(["message" => "We have e-mailed your password reset link!"]);
-            } catch (\Throwable $th) {
-                return response()->json(["message" => $th], 400);
+            } catch (\Exception $e) {
+                return response()->json(["message" => $e], 400);
                 // return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
             }
     }
