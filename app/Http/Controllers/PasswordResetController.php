@@ -31,14 +31,14 @@ class PasswordResetController extends Controller
             return response()->json(["message" => "We can't find a user with that e-mail address."], 404);
         $passwordReset = PasswordReset::updateOrCreate(["email" => $user->email], ["email" => $user->email, "token" => Str::random(60)]);
         if ($user && $passwordReset)
-            //try {
+            try {
                 $user->notify(
                     new PasswordResetRequest($passwordReset->token, $request->red_link)
                 );
                 return response()->json(["message" => "We have e-mailed your password reset link!"]);
-            //} catch (Exception $e) {
-                // return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
-            //}
+            } catch (Exception $e) {
+                return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
+            }
     }
 
 
