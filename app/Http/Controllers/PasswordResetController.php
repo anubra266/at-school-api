@@ -37,6 +37,7 @@ class PasswordResetController extends Controller
                 return response()->json(["message" => "We have e-mailed your password reset link!"]);
             } catch (\Throwable $th) {
                 return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
+                // return response()->json(["message" => "An error occured. Check your Internet connection and try again later!"], 400);
             }
     }
 
@@ -97,8 +98,7 @@ class PasswordResetController extends Controller
             $user->notify(new PasswordResetSuccess($passwordReset));
             return response()->json(["message" => "Password reset was successful."]);
         } catch (\Throwable $th) {
-            return response()->json(["message" => throwException($th)], 400);
-            // return response()->json(["message" => "An error occured. Try again later!"], 400);
+            return response()->json(["message" => "An error occured. Try again later!"], 400);
         }
     }
 }
