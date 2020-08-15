@@ -2,12 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Mail\WelcomeMail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class PasswordResetSuccess extends Notification
+class RegistrationSuccess extends Notification
 {
     use Queueable;
 
@@ -16,9 +18,9 @@ class PasswordResetSuccess extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -37,13 +39,11 @@ class PasswordResetSuccess extends Notification
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
-     */ 
+     */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->line('Your Password Change was Successful 😃')
-            ->line('You can try to login now.')
-            ->line('If this was not you, contact us to protect your account now❗️');
+        return
+            Mail::to($this->user->email)->send(new WelcomeMail($this->data));
     }
 
     /**

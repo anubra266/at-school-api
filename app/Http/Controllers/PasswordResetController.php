@@ -23,6 +23,8 @@ class PasswordResetController extends Controller
      * @return [string] message
      */
 
+     
+
     public function create(Request $request)
     {
         $request->validate(["email" => "required|string|email"]);
@@ -57,7 +59,7 @@ class PasswordResetController extends Controller
         if (!$passwordReset) {
             return response()->json(["message" => "This password reset token is invalid."], 400);
         }
-        if (Carbon::parse($passwordReset->updated_at)->addMinutes(10)->isPast()) {
+        if (Carbon::parse($passwordReset->updated_at)->addMinutes(30)->isPast()) {
             $passwordReset->delete();
             return response()->json(["message" => "This password reset token is invalid."], 400);
         }

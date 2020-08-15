@@ -16,13 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/mail', function () {
+    return view('emails.welcome');
+});
 //Route::get('/pay', 'PayOrderController@store');
-Route::get('/migrate', function() {
+Route::get('/migrate', function () {
     $status = Artisan::call('migrate');
     return '<h1>Migrations Finished</h1>';
 });
-Route::get('/passport-install', function() {
+Route::get('/passport-install', function () {
     $status = Artisan::call('passport:install');
     return '<h1>Passport Installed</h1>';
 });

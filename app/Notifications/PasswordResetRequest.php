@@ -46,7 +46,7 @@ class PasswordResetRequest extends Notification
         $url = $this->red_link . "/resetpassword/" . $this->token;
         return (new MailMessage)
             ->line('You are receiving this email because we received a password reset request for your account.')
-            ->line('The Reset link is active for 10 minutes.')
+            ->line('The Reset link is active for 30 minutes.')
             ->action('Reset Password', $url)
             ->line('If you did not request a password reset, no further action is required.');
     }
